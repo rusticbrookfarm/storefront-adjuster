@@ -158,7 +158,17 @@ class Storefront_Adjuster_Admin {
 			array( 'label_for' => $this->option_name . '_display_footer_privacy_policy_link' )
 		);
 
+		add_settings_field(
+			$this->option_name . '_display_footer_credits',
+			__( 'Display WooCommerce/Storefront credits in footer', 'storefront-adjuster' ),
+			array( $this, $this->option_name . '_display_footer_credits_cb' ),
+			$this->plugin_name,
+			$this->option_name . '_general',
+			array( 'label_for' => $this->option_name . '_display_footer_credits' )
+		);
+
 		register_setting( $this->plugin_name, $this->option_name . '_display_footer_privacy_policy_link', 'boolean' );
+		register_setting( $this->plugin_name, $this->option_name . '_display_footer_credits', 'boolean' );
 	}
 
 	/**
@@ -171,12 +181,26 @@ class Storefront_Adjuster_Admin {
 	}
 
 	/**
-	 * Render the treshold day input for this plugin
+	 * Render the setting input
 	 *
 	 * @since  1.0.0
 	 */
 	public function storefront_adjuster_display_footer_privacy_policy_link_cb() {
 		$day = get_option( $this->option_name . '_display_footer_privacy_policy_link' );
-		echo '<input type="checkbox" name="' . $this->option_name . '_display_footer_privacy_policy_link' . '" id="' . $this->option_name . '_display_footer_privacy_policy_link' . '" ' . checked( 'on', $day, false ) . '> ';
+		echo '<input type="checkbox" name="' . $this->option_name . 
+			'_display_footer_privacy_policy_link' . '" id="' . $this->option_name . 
+			'_display_footer_privacy_policy_link' . '" ' . checked( 'on', $day, false ) . '> ';
+	}
+
+	/**
+	 * Render the setting input
+	 *
+	 * @since  1.0.0
+	 */
+	public function storefront_adjuster_display_footer_credits_cb() {
+		$day = get_option( $this->option_name . '_display_footer_credits' );
+		echo '<input type="checkbox" name="' . $this->option_name . '_display_footer_credits' . 
+			'" id="' . $this->option_name . '_display_footer_credits' . '" ' . 
+			checked( 'on', $day, false ) . '> ';
 	}
 }

@@ -177,6 +177,10 @@ class Storefront_Adjuster {
 		if( get_option( 'storefront_adjuster_display_footer_privacy_policy_link', 'off' ) != 'on' ) {
 			add_filter('storefront_privacy_policy_link', '__return_false');
 		}
+
+		if( get_option( 'storefront_adjuster_display_footer_credits', 'off' ) != 'on' ) {
+			add_filter( 'storefront_credit_link', '__return_false' );
+		}
 	}
 
 	/**
