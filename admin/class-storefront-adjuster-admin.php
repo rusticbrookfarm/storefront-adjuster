@@ -32,6 +32,15 @@ class Storefront_Adjuster_Admin {
 	private $plugin_name;
 
 	/**
+	 * The options name to be used in this plugin
+	 *
+	 * @since  	1.0.0
+	 * @access 	private
+	 * @var  	string 		$option_name 	Option name of this plugin
+	 */
+	private $option_name = 'storefront_adjuster';
+
+	/**
 	 * The version of this plugin.
 	 *
 	 * @since    1.0.0
@@ -100,4 +109,74 @@ class Storefront_Adjuster_Admin {
 
 	}
 
+	/**
+	 * Add an options page under the Settings submenu
+	 *
+	 * @since  1.0.0
+	 */
+	public function add_options_page() {
+	
+		$this->plugin_screen_hook_suffix = add_options_page(
+			__( 'Storefront Adjuster Settings', 'storefront-adjuster' ),
+			__( 'Storefront Adjuster', 'storefront-adjuster' ),
+			'manage_options',
+			$this->plugin_name,
+			array( $this, 'display_options_page' )
+		);
+	
+	}
+
+	/**
+	 * Render the options page for plugin
+	 *
+	 * @since  1.0.0
+	 */
+	public function display_options_page() {
+		include_once 'partials/storefront-adjuster-admin-display.php';
+	}
+
+	/**
+	 * Register all related settings of this plugin
+	 *
+	 * @since  1.0.0
+	 */
+	public function register_setting() {
+
+		add_settings_section(
+			$this->option_name . '_general',
+			__( 'General', 'storefront-adjuster' ),
+			array( $this, $this->option_name . '_general_cb' ),
+			$this->plugin_name
+		);
+
+		add_settings_field(
+			$this->option_name . '_display_footer_privacy_policy_link',
+			__( 'Display privacy policy link in footer', 'storefront-adjuster' ),
+			array( $this, $this->option_name . '_display_footer_privacy_policy_link_cb' ),
+			$this->plugin_name,
+			$this->option_name . '_general',
+			array( 'label_for' => $this->option_name . '_display_footer_privacy_policy_link' )
+		);
+
+		register_setting( $this->plugin_name, $this->option_name . '_display_footer_privacy_policy_link', 'boolean' );
+	}
+
+	/**
+	 * Render the text for the general section
+	 *
+	 * @since  1.0.0
+	 */
+	public function storefront_adjuster_general_cb() {
+		echo '<p>' . __( 'Advanced settings for the WooCommerce Storefront theme. <br/><b>Note: Clear cache after making changes.</b>', 'storefront-adjuster' ) . '</p>';
+	}
+
+	/**
+	 * Render the treshold day input for this plugin
+	 *
+	 * @since  1.0.0
+	 */
+	public function storefront_adjuster_display_footer_privacy_policy_link_cb() {
+		$day = get_option( $this->option_name . '_display_footer_privacy_policy_link' );
+		echo '<input type="checkbox" name="' . $this->option_name . '_display_footer_privacy_policy_link' . '" id="' . $this->option_name . '_display_footer_privacy_policy_link' . '" ' . checked( 'on', $day, false ) . '> ';
+	}
 }
